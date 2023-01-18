@@ -1,0 +1,79 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/login/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5551
+        }
+      ],
+      "UpstreamPathTemplate": "/api/login/{everything}",
+      "UpstreamHttpMethod": [ "POST" ],
+      "SwaggerKey": "AutenticacaoAPI"
+    },
+    {
+      "DownstreamPathTemplate": "/report/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5553
+        }
+      ],
+      "UpstreamPathTemplate": "/api/report/{everything}",
+      "UpstreamHttpMethod": [ "POST", "GET" ],
+      "SwaggerKey": "RelatorioAPI"
+    },
+    {
+      "DownstreamPathTemplate": "/lancamento/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5552
+        }
+      ],
+      "UpstreamPathTemplate": "/api/lancamento/{everything}",
+      "UpstreamHttpMethod": [ "POST", "GET" ],
+      "SwaggerKey": "MovimentacaoAPI"
+    }
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "AutenticacaoAPI",
+      "Config": [
+        {
+          "Name": "FluxoCaixa.Autenticacao.API",
+          "Version": "v1",
+          "Url": "https://localhost:5551/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "RelatorioAPI",
+      "Config": [
+        {
+          "Name": "FluxoCaixa.Relatorio.API",
+          "Version": "v1",
+          "Url": "https://localhost:5553/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "MovimentacaoAPI",
+      "Config": [
+        {
+          "Name": "FluxoCaixa.Movimentacao.API",
+          "Version": "v1",
+          "Url": "https://localhost:5552/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ],
+
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost"
+  }
+}

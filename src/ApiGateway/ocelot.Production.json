@@ -1,0 +1,78 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/login/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "FluxoCaixa.Autenticacao.API",
+          "Port": 55072
+        }
+      ],
+      "UpstreamPathTemplate": "/api/login/{everything}",
+      "UpstreamHttpMethod": [ "POST" ],
+      "SwaggerKey": "AutenticacaoAPI"
+    },
+    {
+      "DownstreamPathTemplate": "/report/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "FluxoCaixa.Relatorio.API",
+          "Port": 55076
+        }
+      ],
+      "UpstreamPathTemplate": "/api/report/{everything}",
+      "UpstreamHttpMethod": [ "POST", "GET" ],
+      "SwaggerKey": "RelatorioAPI"
+    },
+    {
+      "DownstreamPathTemplate": "/lancamento/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "FluxoCaixa.Movimentacao.API",
+          "Port": 55078
+        }
+      ],
+      "UpstreamPathTemplate": "/api/lancamento/{everything}",
+      "UpstreamHttpMethod": [ "POST", "GET" ],
+      "SwaggerKey": "MovimentacaoAPI"
+    }
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "AutenticacaoAPI",
+      "Config": [
+        {
+          "Name": "FluxoCaixa.Autenticacao.API",
+          "Version": "v1",
+          "Url": "https://FluxoCaixa.Autenticacao.API:55072/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "RelatorioAPI",
+      "Config": [
+        {
+          "Name": "FluxoCaixa.Relatorio.API",
+          "Version": "v1",
+          "Url": "https://FluxoCaixa.Relatorio.API:55076/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "MovimentacaoAPI",
+      "Config": [
+        {
+          "Name": "FluxoCaixa.Movimentacao.API",
+          "Version": "v1",
+          "Url": "https://FluxoCaixa.Movimentacao.API:55078/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ],
+
+  "GlobalConfiguration": { 
+  }
+}

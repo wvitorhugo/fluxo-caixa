@@ -1,0 +1,84 @@
+version: '3.4'
+
+services:
+  fluxocaixa.sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: FluxoCaixa.SQLServer
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "Am2gp2%109"
+      ACCEPT_EULA: "Y"
+      TZ: "${TZ:-America/Sao_Paulo}"
+      MSSQL_PID: Express
+
+  fluxocaixa.mongo:
+    image: mongo
+    container_name: FluxoCaixa.MongoDB
+    restart: always
+    ports:
+        - "27017:27017"  
+
+  fluxocaixa.rabbitmq: 
+    image: rabbitmq:3-management
+    container_name: 'FluxoCaixa.RabbitMQ'
+    ports:
+        - 5672:5672
+        - 15672:15672  
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+            
+  fluxocaixa.autenticacao.api:
+    image: "${DOCKER_REGISTRY-}fluxocaixaautenticacaoapi:latest"
+    container_name: "FluxoCaixa.Autenticacao.API"
+    build:
+      context: "."
+      dockerfile: "./FluxoCaixa.Autenticacao.API/Dockerfile" 
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development 
+    ports:
+        - "5551:80"  
+    depends_on:
+      - fluxocaixa.sqlserver
+
+  fluxocaixa.movimentacao.api:
+    image: "${DOCKER_REGISTRY-}fluxocaixamovimentacaoapi:latest"
+    container_name: "FluxoCaixa.Movimentacao.API"
+    build:
+      context: "."
+      dockerfile: "./FluxoCaixa.Movimentacao.API/Dockerfile" 
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Development 
+    ports:
+        - "5552:80"  
+    depends_on:
+      - fluxocaixa.sqlserver
+
+  fluxocaixa.relatorio.api:
+    image: "${DOCKER_REGISTRY-}fluxocaixarelatorioapi:latest"
+    container_name: "FluxoCaixa.Relatorio.API"
+    build:
+      context: "."
+      dockerfile: "./FluxoCaixa.Relatorio.API/Dockerfile" 
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development 
+    ports:
+        - "5553:80"  
+    depends_on:
+      - fluxocaixa.mongo
+      
+  fluxocaixa.gateway.api:
+    image: "${DOCKER_REGISTRY-}fluxocaixagatewayapi:latest"
+    container_name: "FluxoCaixa.Gateway.API"
+    build:
+      context: "."
+      dockerfile: "./FluxoCaixa.Gateway.API/Dockerfile" 
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Development 
+    ports:
+        - "5555:80"  
+    depends_on: 
+      - fluxocaixa.relatorio.api
+      - fluxocaixa.autenticacao.api
+      - fluxocaixa.movimentacao.api
